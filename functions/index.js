@@ -18,6 +18,8 @@ exports.inquiryCreated = functions.firestore
       phone,
       pronouns = "",
       selectedPhotos,
+      bodyPhotos = [],
+      referencePhotos = [],
       size = ""
     } = data;
 
@@ -26,10 +28,21 @@ exports.inquiryCreated = functions.firestore
             path: photo,
         }
     });
+    const bodyImageList = bodyPhotos.map((photo) => {
+      return {
+          path: photo,
+      }
+  });
+  const referenceImageList = referencePhotos.map((photo) => {
+    return {
+        path: photo,
+    }
+});
 
     const mailOptions = {
       from: `"Booking Inquiry" <jamesford128@gmail.com>`,
-      to: "maxbtattin@gmail.com",
+      to: "booking.maxbtattin@gmail.com",
+      replyTo: email,
       subject: `A new booking inquiry was made`,
       template: "generic",
       context: {
@@ -43,6 +56,8 @@ exports.inquiryCreated = functions.firestore
         phone,
         pronouns,
         size,
+        bodyImageList,
+        referenceImageList,
         imageList
       },
     };
